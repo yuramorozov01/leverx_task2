@@ -1,3 +1,7 @@
+from functools import total_ordering
+
+
+@total_ordering
 class Version:
     def __init__(self, version):
         self._weights = self._generate_weights()
@@ -8,24 +12,10 @@ class Version:
         me, other = self._equalize_length_of_operands(self.version, other)
         return me == other
 
-    def __le__(self, other):
-        other = self._convert_operand(other)
-        me, other = self._equalize_length_of_operands(self.version, other)
-        return me <= other
-
     def __lt__(self, other):
         other = self._convert_operand(other)
         me, other = self._equalize_length_of_operands(self.version, other)
         return me < other
-
-    def __ne__(self, other):
-        return not (self == other)
-
-    def __gt__(self, other):
-        return not (self <= other)
-
-    def __ge__(self, other):
-        return not (self < other)
 
     def _convert_operand(self, operand):
         '''Convert operand to the specified form.
