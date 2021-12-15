@@ -1,4 +1,5 @@
 from functools import total_ordering
+from itertools import zip_longest
 
 
 @total_ordering
@@ -64,16 +65,12 @@ class Version:
         return weights
 
     def _equalize_length_of_operands(self, operand_1, operand_2):
-        new_operand_1 = operand_1.copy()
-        new_operand_2 = operand_2.copy()
-
-        while len(new_operand_1) < len(new_operand_2):
-            new_operand_1.append(0)
-
-        while len(new_operand_1) > len(new_operand_2):
-            new_operand_2.append(0)
+        extended_operands = list(zip(*zip_longest(operand_1, operand_2, fillvalue=0)))
+        new_operand_1 = extended_operands[0]
+        new_operand_2 = extended_operands[1]
 
         return new_operand_1, new_operand_2
+
 
 def main():
     to_test = [
